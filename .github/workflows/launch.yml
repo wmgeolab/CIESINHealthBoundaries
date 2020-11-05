@@ -1,10 +1,10 @@
 on:
   workflow_dispatch
 
-name: Ethans Test
+name: Ethan Test
 
 jobs:
-  EthansFirstJob:
+  EthanFirstJob:
     runs-on: ubuntu-latest
     container: osgeo/gdal:ubuntu-small-latest
     steps: 
@@ -20,5 +20,4 @@ jobs:
     - name: Example Script
       run: |
            ls
-           python shape_validation.py
-           ls           
+           ShapeFileChecks.py         
