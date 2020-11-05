@@ -307,6 +307,31 @@ with fiona.open(final_filename, 'w', 'ESRI Shapefile', schema, reader.crs) as ou
     
     
     
+# Mesh Checks
+
+import geopandas
+import topojson as tp
+import matplotlib.pyplot as plt
+import descartes
+import pygeos
+
+gdf = geopandas.read_file("ne_110m_admin_0_sovereignty.shp")
+
+gdf.plot().get_figure().savefig("rawData.png")
+
+
+gdfTopo = tp.Topology(gdf, topology=True, 
+                           prequantize=False, 
+                           shared_coords=True,
+                           prevent_oversimplify=True).toposimplify(.0001).to_gdf().set_crs("EPSG:4326")
+gdfTopo.plot().get_figure().savefig("fixedMesh.png")
+
+contrast = geopandas.overlay(gdfTopo, gdf, how="symmetric_difference")
+contrast.plot().get_figure().savefig("meshDifference.png")
+
+contrast.to_file("difference.geojson", driver='GeoJSON')
+    
+    
     
     
     
